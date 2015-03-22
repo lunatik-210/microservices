@@ -1,27 +1,14 @@
 from flask.ext.httpauth import HTTPBasicAuth
 from flask import g
 
-from models import User
+from app.models import User
 from app.rest import make_response, CODES
 
 from datetime import datetime, timedelta
-from time import sleep
 
-import jwt
-
-secret = "secret key"
 
 auth = HTTPBasicAuth()
 login = HTTPBasicAuth()
-
-
-def get_session_token(payload, secret, expiration_time_secs=900):
-    payload['exp'] = datetime.utcnow() + timedelta(seconds=expiration_time_secs)
-    return jwt.encode(
-        payload,
-        secret,
-        'HS512'
-    )
 
 
 @login.verify_password

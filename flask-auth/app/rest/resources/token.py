@@ -5,7 +5,7 @@ from flask.ext.restful import Resource
 
 from app.rest.http_helpers import make_response, CODES
 
-from app.rest import get_session_token, login
+from app.rest import login
 
 
 class TokenResource(Resource):

@@ -1,12 +1,20 @@
 from flask import current_app
 
 from app import db
-from app.rest import get_session_token
 
 from jwt import decode
 from jwt.exceptions import ExpiredSignatureError
 
 from passlib.apps import custom_app_context as pwd_context
+
+
+def get_session_token(payload, secret, expiration_time_secs=900):
+    payload['exp'] = datetime.utcnow() + timedelta(seconds=expiration_time_secs)
+    return jwt.encode(
+        payload,
+        secret,
+        'HS512'
+    )
 
 
 class User(db.Model):
