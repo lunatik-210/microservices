@@ -27,9 +27,6 @@ if __name__ == "__main__":
     r = requests.get(url+"/token", headers=headers)
     token = r.json().get('result').get('token')
     refresh_token = r.json().get('result').get('refresh_token')
-    print token, refresh_token
-
-    sleep(3)
 
     #headers = { 'Authorization': 'Basic {0}'.format(b64encode('{0}:{1}'.format(token, refresh_token))) }
     #r = requests.get(url+"/refresh_token", headers=headers)    
