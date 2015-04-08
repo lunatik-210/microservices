@@ -11,6 +11,8 @@ from app.models import User
 from app.rest import make_response, CODES
 from app.rest import PaginationMixin
 
+from app.rest.auth import auth
+
 from flask.ext.restful import reqparse
 
 
@@ -22,6 +24,7 @@ class UserResource(Resource):
             print traceback.print_exc()
             return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)
 
+    @auth.login_required
     def get(self, id):
         try:
             user = User.query.filter_by(id=id).first()
@@ -34,6 +37,7 @@ class UserResource(Resource):
             print traceback.print_exc()
             return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)
 
+    @auth.login_required
     def delete(self, id):
         try:
             user = User.query.filter_by(id=id).first()
@@ -65,11 +69,11 @@ class UsersResource(Resource, PaginationMixin):
             print traceback.print_exc()
             return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)
     
+    @auth.login_required
     def get(self):
         try:
             paging_args = self.get_paging()
             pagination = User.query.paginate(paging_args.page, per_page=paging_args.size, error_out=False)
-
             users = []
             for u in pagination.items:
                 users.append(dict(id=u.id, email=u.email))

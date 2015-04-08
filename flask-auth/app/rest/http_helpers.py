@@ -22,6 +22,10 @@ CODES = dict(
     ERROR_NOT_ALLOWED=dict(
         code=4,
         description="You don't have permissions to perform this method"
+    ),
+    ERROR_SESSION_EXPIRED=dict(
+        code=5,
+        description="Your access token was expired, please refresh it or relogin"
     )
 )
 

@@ -1,20 +1,18 @@
-from flask import current_app
+from flask import current_app, g
 
 from app import db
 
-from jwt import decode
-from jwt.exceptions import ExpiredSignatureError
+from jwt import decode, encode
+from jwt.exceptions import ExpiredSignatureError, DecodeError
 
 from passlib.apps import custom_app_context as pwd_context
+
+from datetime import datetime, timedelta
 
 
 def get_session_token(payload, secret, expiration_time_secs=900):
     payload['exp'] = datetime.utcnow() + timedelta(seconds=expiration_time_secs)
-    return jwt.encode(
-        payload,
-        secret,
-        'HS512'
-    )
+    return encode(payload, secret, 'HS512')
 
 
 class User(db.Model):
@@ -33,17 +31,43 @@ class User(db.Model):
     def generate_auth_token(self):
         app = current_app._get_current_object()
         user = dict(id=self.id, email=self.email)
-        token = get_session_token(dict(user=user, is_refresh=False), app.config['SECRET_KEY'])
+        token = get_session_token(dict(user=user, is_refresh=False), app.config['SECRET_KEY'], 1200)
         refresh_token = get_session_token(dict(user=user, is_refresh=True), app.config['SECRET_KEY'], 172800)
         return token, refresh_token
+
+    @staticmethod
+    def verify_refresh_token(token, refresh_token):
+        app = current_app._get_current_object()
+        if token and refresh_token:
+            try:
+                d_token = decode(token, app.config['SECRET_KEY'])
+            except ExpiredSignatureError:
+                pass
+            except DecodeError:
+                return None
+            
+            try:
+                d_refresh_token = decode(refresh_token, app.config['SECRET_KEY'])
+            except ExpiredSignatureError:
+                return None
+            except DecodeError:
+                return None
+        else:
+            return None
+
+        user = User.query.get(d_refresh_token['user']['id'])
+        return user
 
     @staticmethod
     def verify_auth_token(token):
         app = current_app._get_current_object()
         try:
             data = decode(token, app.config['SECRET_KEY'])
-        #valid token, but expired
         except ExpiredSignatureError:
+            g.error = 'ExpiredSignatureError'
+            return None
+        except DecodeError:
+            g.error = 'DecodeError'
             return None
         user = User.query.get(data['user']['id'])
         return user
