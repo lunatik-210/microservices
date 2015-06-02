@@ -2,10 +2,9 @@ import requests
 from time import sleep
 from base64 import b64encode
 
-url = "http://localhost:5000/v1"
+url = "http://localhost:5001/v1"
 
-def post_users(token):
-    headers = { 'Authorization': 'Basic {0}'.format(b64encode('{0}:'.format(token))) }
+def post_users():
     for i in range(10):
         email = "andrew.d.lapin{0}@gmail.com".format(i)
         user = dict(email=email, password="root")
@@ -32,6 +31,6 @@ if __name__ == "__main__":
     #r = requests.get(url+"/refresh_token", headers=headers)    
     #token = r.json().get('result').get('token')
 
-    post_users(token)
+    post_users()
     users = get_users(token)
     delete_users(token, users)

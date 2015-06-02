@@ -1,0 +1,3 @@
+DAL - Domain access layer
+
+HTTP/socket/rest communication as well as models and common services should be implemented here

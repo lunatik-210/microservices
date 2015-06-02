@@ -1,0 +1,66 @@
+{
+  "name": "THESIS_DEMO",
+  "version": "0.0.1",
+  "description": "I  Resolve dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "jQuery": "./bower_components/jquery/dist/jquery.min.js",
+    "domReady": "./bower_components/domReady/domReady.js",
+    "angular": "./bower_components/angular/angular.min.js",
+    "angularUIRouter": "./bower_components/angular-ui-router/release/angular-ui-router.min.js",
+    "store": "./bower_components/store.js/store+json2.min.js",
+    "base64": "./bower_components/angular-base64/angular-base64.min.js"
+  },
+  "browserify-shim": {
+    "angular": {
+      "depends": [
+        "jQuery"
+      ],
+      "exports": "angular"
+    },
+    "angularUIRouter": {
+      "depends": [
+        "angular"
+      ]
+    },
+    "base64": {
+      "depends": [
+        "angular"
+      ]
+    },
+    "jQuery": {
+      "exports": "jQuery"
+    }
+  },
+  "dependencies": {
+    "bower": "^1.3.12",
+    "browserify": "^8.1.1",
+    "browserify-shim": "^3.8.2",
+    "gulp": "^3.8.10",
+    "gulp-clean": "^0.3.1",
+    "gulp-connect": "^2.2.0",
+    "gulp-jshint": "^1.9.0",
+    "gulp-minify-css": "^0.3.12",
+    "gulp-ng-config": "^1.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^1.3.1",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "^1.0.2",
+    "gulp-util": "^3.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1",
+    "yargs": "^3.8.0"
+  },
+  "devDependencies": {}
+}

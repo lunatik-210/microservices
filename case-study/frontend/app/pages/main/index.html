@@ -1,0 +1,14 @@
+<div class="p-main container">
+    <ui-navbar receipt-invitations-count="receipt_invitations_count.count" slaps-count="slaps_count.count"></ui-navbar>
+    <h1>2 + 3 = {{sum}}!</h1>
+    <button ng-click="sign_out()">Sign-out</button></br></br>
+    <form>
+        <input type="text" name="x" ng-model="form.x" placeholder="x">
+        <input type="text" name="y" ng-model="form.y" placeholder="y">
+        <button ng-click="submit(form.x, form.y)">Submit</button></br>
+    </form>
+
+    <div ng-if="result">
+    	<h1>{{result.x}} + {{result.y}} = {{result.sum}}!</h1>
+    </div>
+</div>

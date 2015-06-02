@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import traceback
 
 from flask import g
@@ -14,7 +13,7 @@ from app.rest import PaginationMixin
 from app.rest.auth import auth
 
 from flask.ext.restful import reqparse
-
+from flask import request
 
 class UserResource(Resource):
     def options(self, id):
@@ -85,6 +84,7 @@ class UsersResource(Resource, PaginationMixin):
 
     def post(self):
         try:
+            print request.data
             args = self.post_parser.parse_args()
 
             if User.query.filter_by(email=args.email).first() is not None:
@@ -97,6 +97,28 @@ class UsersResource(Resource, PaginationMixin):
             db.session.commit()
 
             return make_response(None, CODES["OK"], 201)
+        except Exception:
+            print traceback.print_exc()
+            return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)
+
+
+class AuthorizeResource(Resource):
+    def options(self):
+        try:
+            return make_response(None, CODES["OK"], 200)
+        except Exception:
+            print traceback.print_exc()
+            return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)
+    
+    @auth.login_required
+    def get(self):
+        try:
+            user = User.query.filter_by(id=g.user.id).first()
+
+            if user is None:
+                return make_response(None, CODES["ERROR_INVALID_REQUEST"], 400)
+
+            return make_response(dict(id=user.id, email=user.email), CODES["OK"], 200)
         except Exception:
             print traceback.print_exc()
             return make_response(None, CODES["ERROR_SERVER_EXCEPTION"], 400)

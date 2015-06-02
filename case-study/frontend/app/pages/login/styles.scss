@@ -1,0 +1,37 @@
+$b-loginform-width: 200px;
+$b-loginform-height: 300px;
+
+.b-loginform{
+  width: $b-loginform-width;
+  height: $b-loginform-height;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -$b-loginform-width/2;
+  margin-top: -$b-loginform-height/2;
+  border-radius: 5px 5px;
+  //border: 1px black solid;
+}
+.b-loginform-email{
+  width: 150px;
+  display: block;
+  text-align: center;
+  margin-left: ($b-loginform-width - 150)/2;
+  //border: 1px red solid;
+}
+.b-loginform-pass{
+  width: 150px;
+  display: block;
+  text-align: center;
+  margin-left: ($b-loginform-width - 150)/2;
+  margin-top: 10px;
+  //border: 1px green solid;
+}
+.b-loginform-btn{
+  display: block;
+  width: 150px;
+  height: 30px;
+  margin-left: ($b-loginform-width - 150)/2;
+  margin-top: 10px;
+  //border: 1px yellow solid;
+}
