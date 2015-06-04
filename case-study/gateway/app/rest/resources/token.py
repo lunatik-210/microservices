@@ -1,12 +1,11 @@
 import traceback
 
-from flask import request
+from flask import request, current_app
 from flask.ext.restful import Resource
 
 from app.rest.http_helpers import make_response, make_response_by_response, CODES
 
 import requests
-
 
 class TokenResource(Resource):
     def options(self):
@@ -18,7 +17,8 @@ class TokenResource(Resource):
 
     def get(self):
         try:
-            response = requests.get('http://localhost:5001/v1/token', headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.get(app.config['AUTH_SERVICE']+'/v1/token', headers=request.headers)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()
@@ -35,7 +35,8 @@ class RefreshTokenResource(Resource):
 
     def get(self):
         try:
-            response = requests.get('http://localhost:5001/v1/refresh_token', headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.get(app.config['AUTH_SERVICE']+'/v1/refresh_token', headers=request.headers)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()

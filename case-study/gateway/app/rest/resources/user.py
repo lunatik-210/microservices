@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import traceback
 
-from flask import request
+from flask import request, current_app
 from flask.ext.restful import Resource
 
 from app.rest import make_response, make_response_by_response, CODES
@@ -18,7 +18,8 @@ class UserResource(Resource):
 
     def get(self, id):
         try:
-            response = requests.get('http://localhost:5001/v1/users/'+id, headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.get(app.config['AUTH_SERVICE']+'/v1/users/'+id, headers=request.headers)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()
@@ -26,7 +27,8 @@ class UserResource(Resource):
 
     def delete(self, id):
         try:
-            response = requests.delete('http://localhost:5001/v1/users/'+id, headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.delete(app.config['AUTH_SERVICE']+'/v1/users/'+id, headers=request.headers)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()
@@ -43,7 +45,8 @@ class UsersResource(Resource):
     
     def get(self):
         try:
-            response = requests.get('http://localhost:5001/v1/users', headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.get(app.config['AUTH_SERVICE']+'/v1/users', headers=request.headers)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()
@@ -51,7 +54,8 @@ class UsersResource(Resource):
 
     def post(self):
         try:
-            response = requests.post('http://localhost:5001/v1/users', data=request.json)
+            app = current_app._get_current_object()
+            response = requests.post(app.config['AUTH_SERVICE']+'/v1/users', data=request.json)
             return make_response_by_response(response)
         except Exception:
             print traceback.print_exc()

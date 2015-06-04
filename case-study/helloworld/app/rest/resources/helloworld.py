@@ -1,12 +1,11 @@
 import traceback
 
-from flask import request
+from flask import request, current_app
 from flask.ext.restful import Resource, reqparse
 
 from app.rest.http_helpers import make_response, make_response_by_response, CODES
 
 import requests
-
 
 class HelloWorldResource(Resource):
     def __init__(self):
@@ -23,7 +22,8 @@ class HelloWorldResource(Resource):
 
     def get(self):
         try:
-            response = requests.get('http://localhost:5001/v1/authorize', headers=request.headers)
+            app = current_app._get_current_object()
+            response = requests.get(app.config['AUTH_SERVICE']+'/v1/authorize', headers=request.headers)
             if response.status_code != 200:
                 return make_response_by_response(response)
 

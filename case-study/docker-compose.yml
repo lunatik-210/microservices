@@ -1,0 +1,29 @@
+flaskauth:
+  build: ./flask-auth
+  command: python app.py -c docker.cfg runserver -p 5001 -h 0.0.0.0
+  ports:
+   - "5001:5001"
+  volumes:
+   - ./flask-auth:/code
+
+helloworld:
+  build: ./helloworld
+  command: python app.py -c docker.cfg runserver -p 5002 -h 0.0.0.0
+  ports:
+   - "5002:5002"
+  volumes:
+   - ./helloworld:/code
+  links:
+   - flaskauth
+
+gateway:
+  build: ./gateway
+  command: python app.py -c docker.cfg runserver -p 5000 -h 0.0.0.0
+  ports:
+   - "5000:5000"
+  volumes:
+   - ./gateway:/code
+  links:
+   - flaskauth
+   - helloworld
+
