@@ -9,7 +9,9 @@ import requests
 
 class TokenResource(Resource):
     def options(self):
+        print 'asd'
         try:
+            print 'asd'
             return make_response(None, CODES["OK"], 200)
         except Exception:
             print traceback.print_exc()

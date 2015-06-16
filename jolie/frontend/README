@@ -1,0 +1,16 @@
+I 
+Resolve dependencies
+
+1) npm - package manager should be installed
+2) npm -g install bower gulp
+3) npm install - will install all the dependencies from package.json locally
+4) bower install - will install all the dependencies from bower.json locally
+
+II
+Gulp commands:
+
+gulp clean - removes build directory
+gulp verify - performs static analysis of your js code, prints errors
+gulp server - performs build and runs server (will watch on changes and restarts automatically)
+gulp - performs singe build
+
